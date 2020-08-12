@@ -1,4 +1,7 @@
 # Linear Regression
+Linera Regression is a supervised learning quantitative regression. It's create a realtion between explanatory variable to so a specific problem. If there is only one explanatory variable, then it's call simple linear regression. But if there have more than one explanatory variables. At this time, it's call Multi Linear Regression. We need to calculate Gradient Descent, cost function and so on. Out Linear regrassion equestion is,  
+![Linear Equation](https://github.com/jacknayem/MachineLearning/blob/Linear-Regression/images/Equations.png)  
+
 
 **File:** main.m
 In my repository, there are two type of Datasets: Data.txt and Salary_data.csv. I whoud practice on Data.txt. First I loaded the data Data.txt and Devide into input value X and output value y. Then I ploted all of the value.
@@ -9,7 +12,7 @@ y = data(:,2);
 plot(x,y,'xr')
 ```
 **Output:**  
-![Data Plotting](https://github.com/jacknayem/MachineLearning/blob/Linear-Regression/MainValuePlotting.png)  
+![Data Plotiing](https://github.com/jacknayem/MachineLearning/blob/Linear-Regression/images/MainValuePlotting.png)
 
 
 Second, I define some required varibale to calculate **Gradient Descent**. Cause I need to knwo the minimum value of **Theta**. This why I called the gradientDescent().
@@ -45,7 +48,7 @@ hold on
 plot(x,predvalue)
 ```
 **Output:**  
-![Plotting value](https://github.com/jacknayem/MachineLearning/blob/Linear-Regression/MainVsPredicted%20value.png)
+![Plotting value](https://github.com/jacknayem/MachineLearning/blob/Linear-Regression/images/MainVsPredicted%20value.png)
 
 Normalize all of the value.
 ```
