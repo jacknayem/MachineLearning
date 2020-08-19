@@ -1,6 +1,5 @@
-logistic regression
 
-Imagine, you are a data analyst and you would try to classofy an email, which is spam or not spam. what you have to do? I think, already you know you have to move on classification models. The ligistic Regression is a calssification model. it has specific labels. There are two type of data(1,2) for binary classification. In multi-class case has lots of label.The logictic regression was develop for population grouth and name logistic by Verhulst in 1830 and 1840. Let extend how it is work step by step.
+Imagine, you are a data analyst and you would try to classify an email, which is spam or not spam. Then what you have to do? Maybe already you are thinking about classification models. Yes, the Logistic Regression is a classification model, which helps you to classify our mention problem. There are two types of outcome for binary classification, one is negative(0) and the other one is positive(1). In multi-class case has lots of labels. The logistic regression was developed for population growth and name logistic by Verhulst in 1830 and 1840. Let's extend how it is work step by step through a little project.
 
 First, introduce with logistic regression,
 ![Logistic Equation](https://github.com/jacknayem/MachineLearning/blob/Logistic-Regression/images/LogisticRegression.PNG)
@@ -8,8 +7,8 @@ First, introduce with logistic regression,
 Sigmoid function looking in graaph,
 ![Logistic Grap](https://github.com/jacknayem/MachineLearning/blob/Logistic-Regression/images/sigmoidFunction.png)
 
-I made a main.m file to load our targeted data. and I have plot the value to check out the condition of this.
-main.m
+I made a main.m file is use to load our targeted data and dispay all of the outcome. First I have plot the value to check out the condition of this.
+_**main.m**_
 ```
 data = load("Data.txt");
 x = data(:,1:2);    %explanatory value
@@ -23,8 +22,8 @@ iteration = 400;      %Interating values for minimizing Gradient Descent
 theta = zeros(n,1);
 ```
 
-I have plot the data using plotData function
-plotData.m
+I have ploted the data using _plotData_ function. Here I send independent variables as x and depended variable as y.
+_**plotData.m**_
 ```
 function value = plotData(x,y)
 positive = find(y == 1);
@@ -39,8 +38,8 @@ end
 Output:
 ![Plot Data](https://github.com/jacknayem/MachineLearning/blob/Logistic-Regression/images/potData.png)
 
-Then we need golobal minimul for getting theta value. Here I use function minimization unconstrained (fminunc) function. Using this function I have called the CostFunction() function to get error rate and theta value
-Part code of main.m
+Then we need know global minimum for getting theta values. Here I use function minimization unconstrained (fminunc) function. Using this function I have called the CostFunction() function to get error rate and theta value. Our maximum iterations is 400.
+Part code of _**main.m**_
 ```
 option = optimset('GradObj','on','MaxIter',400);
 [theta, cost] = fminunc(@(t)(CostFunction(X,y,t,m)),theta,option);
@@ -56,9 +55,9 @@ Theta is:
 0.206232
 0.201472
 ```
-Here is the cost function to calculate error rate.
+Here is the cost function to calculate error rate. X and y go as a parameter. And m is the length of our data.
 ![](https://github.com/jacknayem/MachineLearning/blob/Logistic-Regression/images/CostFunction.PNG)
-CostFunction.m
+**_CostFunction.m_**
 ```
 function [J,grad] = CostFunction(X,y,theta,m)
 J = 0;
@@ -68,7 +67,7 @@ J = (1/m) .* ((-y' * log(hpyX)) - ((1-y)' * log(1-hpyX)));
 grad = (1/m) * (X' * (hpyX - y));
 end
 ```
-Sigmoid.m
+_**Sigmoid.m**_
 ```
 function sigmoid = Sigmoid(z)
 sigmoid = zeros(size(z));
@@ -76,21 +75,21 @@ sigmoid = 1 ./ (1 + exp(-z));
 end
 ```
 Finally we classify the data using predict() function
-part of main.m
+part of _**main.m**_
 ```
 pred = predict(X,theta);
 Ypred = (pred >= 0.5);
-fprintf('Train Accuracy: %f\n', mean(double(Ypred == y)) * 100);
+fprintf('The training Accuracy: %f\n', mean(double(Ypred == y)) * 100);
 ```
 Output:
 ```
-Train Accuracy: 89.000000
+The training Accuracy: 89.000000
 ```
-predict.m
+_**predict.m**_
 ```
 function pred = predict(theta, X)
 z = theta * X;
 pred = Sigmoid(z);
 end
 ```
-I think the prediction result is not bad.
+I think 89% accuracy result is not bad.
