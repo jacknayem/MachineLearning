@@ -186,4 +186,4 @@ a3 = sigmoid(z3);
 [prob, pred] = max(a3, [], 2);
 end
 ```
-Look at the _predict_ function. what are you getting similarity? It's noting, we just using the logistic regression in activation nodes and in hypothesis. Then we got out results.
+Look at the _predict_ function. what are you getting similarity? There are almost same, we just using the logistic regression in activation nodes and in hypothesis. Then we got out results.
