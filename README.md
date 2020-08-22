@@ -74,7 +74,7 @@ axis image off;
 drawnow;
 end
 ```
-We saw an example in previous how we can figure out the error rate and the value of theta in logistic regression. We will do it again to understand the ueural network.
+We saw an example in previous how we can figure out the error rate and the value of theta in logistic regression. We will do it again to understand the ueural network.  
 **_main.m_**
 ```
 theta_t = [-2; -1; 1; 2];
