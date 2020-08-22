@@ -23,7 +23,7 @@ Finally, we will get our estimeted result. Let's start with a simple project to 
 
 **_main.m_**
 ```
-load('Data.mat'); % 5000 x 400 (Five Thousand example)
+load('Data.mat'); % 5000 x 400 (Five Thousand examples)
 m = size(X,1);
 random_indices = randperm(m);
 sel = X(random_indices(1:100),:); %Selected 100 random sample from Data.mat
@@ -92,7 +92,7 @@ Theta values
 0.724722
 1.398003
 ```
-**_lrCostFunction_**
+**_lrCostFunction.m_**
 ```
 function [J, grad] = lrCostFunction(theta_t, X_t, y_t, lambda_t)
 J = 0;
@@ -105,9 +105,85 @@ grad(1) = (1/m) .* (X_t(:,1)' * (hyp - y_t)); %Calculating the theta fo the bias
 grad(2:end) = (1/m) .* (X_t(:,2:end)' * (hyp - y_t)) + (lambda_t/m) * theta_t(2:end); %Calculating other theta values
 end
 ```
-**_sigmoid_**
+**_sigmoid.m_**
 ```
 function hyp = sigmoid(z)
 hyp = 1 ./ (1 + exp(-z));
 end
 ```
+Before, I have understood how to caculate the cost function and gradient descent. Now I will apply this process to compute the thetas for our label.
+**_main.m_**
+```
+lambda = .01;
+number_labels = 10;
+all_theta = OneVsAll(X, y, number_labels, lambda);
+```
+**_OneVsAll.m_**
+```
+function all_theta =  OneVsAll(X, y, number_label, lambda)
+X = [ones(length(X),1), X]; % 5000 x 401 matrix
+[m,n] = size(X); % m=500 n=401
+all_theta = zeros(number_label,n); % all_theta = [10 x 401] zero matrix
+
+initial_theta = zeros(n,1); % initial_theta = [401 x 1] zero matrix
+
+options = optimset('GradObj','on','MaxIter',50); % Computing thetas using 50 times iteration
+for c = 1:number_label
+    all_theta(c,:) = fminunc(@(t)(lrCostFunction(t, X, (y == c), lambda)),...
+        initial_theta, options);
+end
+end
+```
+Now the environment is ready to predict our model.  
+
+**_main.m_**
+```
+pred = predOneVsAll(all_theta, X);
+pred = mean(double(pred == y) * 100);
+fprintf('Accuracy is %f',pred)
+```
+**Output**
+```
+Accuracy is 92.760000
+```
+**_predOneVsAll.m_**
+```
+function pred = predOneVsAll(all_theta,X)
+m = size(X,1);
+X = [ones(m,1) X];
+pred = zeros(m,1);
+prob = X * all_theta';
+[prob, pred] = max(prob,[],2);
+end
+```
+Finally I know that, how to calculate the gradient descent and cost function for multiple variables. Now it's time to calculate the neura network. Here I will show that how to classify the hand writing degite using one hidden layer. let's begain,
+I have input values and also have weights.
+**_neuralNmain.m_**
+```
+load('Data.mat'); %Load input X
+load('weights.mat'); %Load the theta (Theta1, Theta2)
+pred = predict(Theta1, Theta2, X);
+fprintf('Training Set Accuracy: %f\n', mean(double(pred == y)) * 100);
+```
+**Output**
+```
+Training Set Accuracy: 97.520000
+```
+**_predict.m_**
+```
+function pred = predict(Theta1, Theta2, X)
+m = size(X,1);
+pred = zeros(m,1);
+
+a1 = [ones(m,1) X];
+z2 = a1 * Theta1';
+a2 = sigmoid(z2);
+
+a2 = [ones(size(a2,1),1) a2];
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
+
+[prob, pred] = max(a3, [], 2);
+end
+```
+Look at the _predict_ function. what are you getting similarity? It's noting, we just using the logistic regression in activation nodes and in hypothesis. Then we got out results.
