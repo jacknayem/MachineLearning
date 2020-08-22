@@ -30,7 +30,7 @@ sel = X(random_indices(1:100),:); %Selected 100 random sample from Data.mat
 [h,display_array] = DisplayData(sel);
 ```
 **Output:**  
-![plot Display](https://github.com/jacknayem/MachineLearning/blob/Neural-Network/images/DisplaySampleData.png)
+![plot Display](https://github.com/jacknayem/MachineLearning/blob/Neural-Network/images/DisplaySampleData.png)  
 **_DisplayData.m_**
 ```
 function [h,display_array] =  DisplayData(X,example_width)
@@ -72,5 +72,42 @@ end
 h = imagesc(display_array,[-1,1]);
 axis image off;
 drawnow;
+end
+```
+We saw an example in previous how we can figure out the error rate and the value of theta in logistic regression. We will do it again to understand the ueural network.
+**_main.m_**
+```
+theta_t = [-2; -1; 1; 2];
+X_t = [ones(5,1) reshape(1:15,5,3)/10];
+y_t = ([1;0;1;0;1] >= 0.5);
+lambda_t = 3;
+[J, grad] = lrCostFunction(theta_t, X_t, y_t, lambda_t);
+```
+**Output:**
+```
+The Cost function is: 2.534819
+Theta values
+0.146561
+-0.548558
+0.724722
+1.398003
+```
+**_lrCostFunction_**
+```
+function [J, grad] = lrCostFunction(theta_t, X_t, y_t, lambda_t)
+J = 0;
+grad = zeros(length(theta_t),1);
+m = length(y_t);
+z = X_t * theta_t;
+hyp = sigmoid(z);
+J = (1/m) .* (((-y_t)' * log(hyp))-((1 - y_t)' * log(1 - hyp))) + (lambda_t/(2 * m)) .* sum(theta_t(2:end).^2); %Calculating the cost function
+grad(1) = (1/m) .* (X_t(:,1)' * (hyp - y_t)); %Calculating the theta fo the bias unit
+grad(2:end) = (1/m) .* (X_t(:,2:end)' * (hyp - y_t)) + (lambda_t/m) * theta_t(2:end); %Calculating other theta values
+end
+```
+**_sigmoid_**
+```
+function hyp = sigmoid(z)
+hyp = 1 ./ (1 + exp(-z));
 end
 ```
